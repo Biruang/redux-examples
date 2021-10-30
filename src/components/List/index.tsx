@@ -1,24 +1,27 @@
-import React, {useState} from "react";
-import {connect} from "react-redux";
+import React from "react";
+import "./styled.css";
+import { Item } from "../Item";
+import {connect, ConnectedProps} from "react-redux";
+import {TRootReducer} from "../../reducers";
 
-export const List = () => {
-  const [items, setItems] = useState()
+type TProps = ConnectedProps<typeof connector>;
 
-
-  connect(
-    (state, s) => {
-    }
-  )
-
-  return(
+const List = (props: TProps) => {
+  return (
     <ul>
-      <li>
-        <div>1</div>
-
-        <div>name</div>
-
-        <div>value</div>
-      </li>
+      {props.items.map((item, index) => (
+        <li key={item.id}>
+          <Item item={item} position={index + 1} />
+        </li>
+      ))}
     </ul>
-  )
+  );
 }
+
+const mapStateToProps = (state: TRootReducer) => ({
+  items: state.list.items
+});
+
+const connector = connect(mapStateToProps);
+
+export default connector(List)
